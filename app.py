@@ -39,3 +39,4 @@ def generate(data: InputData):
     )
 
     return {"result": response.output_text}
+``
