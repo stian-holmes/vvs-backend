@@ -21,17 +21,17 @@ def health():
 @app.post("/api/generate")
 def generate(data: InputData):
     prompt = f"""
-    Du er en erfaren rørlegger.
-    Lag en profesjonell VVS-rapport basert på dette:
+Du er en erfaren rørlegger.
+Lag en profesjonell VVS-rapport basert på dette:
 
-    {data.description}
+{data.description}
 
-    Inkluder:
-    - Kort oppsummering
-    - Mulig årsak
-    - Anbefalte tiltak
-    - Konklusjon
-    """
+Inkluder:
+- Kort oppsummering
+- Mulig årsak
+- Anbefalte tiltak
+- Konklusjon
+"""
 
     response = client.responses.create(
         model="gpt-4.1-mini",
@@ -39,4 +39,3 @@ def generate(data: InputData):
     )
 
     return {"result": response.output_text}
-``
