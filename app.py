@@ -5,10 +5,8 @@ from openai import OpenAI
 
 app = FastAPI()
 
-# OpenAI klient
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-# Request modell
 class InputData(BaseModel):
     description: str
 
@@ -41,4 +39,3 @@ def generate(data: InputData):
     )
 
     return {"result": response.output_text}
-``
