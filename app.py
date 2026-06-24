@@ -173,3 +173,4 @@ Konklusjon:
             status_code=500,
             detail="An unexpected error occurred"
         )
+ 
