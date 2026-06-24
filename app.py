@@ -64,7 +64,7 @@ async def generate(data: InputData):
 
     logger.info(f"Generating report for description: {data.description[:50]}...")
 
-prompt = f"""
+    prompt = f"""
 Du er en erfaren rørlegger.
 
 Lag en profesjonell og kundeklar VVS-rapport basert på dette:
