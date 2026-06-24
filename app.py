@@ -33,7 +33,8 @@ def generate(data: InputData):
     if not data.description.strip():
         raise HTTPException(status_code=400, detail="Description cannot be empty")
 
-prompt = f"""
+    # ✅ IMPORTANT: dette MÅ være inne i funksjonen
+    prompt = f"""
 Du er en erfaren rørlegger.
 
 Lag en profesjonell og tydelig VVS-rapport basert på dette:
@@ -42,7 +43,7 @@ Lag en profesjonell og tydelig VVS-rapport basert på dette:
 
 Format:
 - Skriv kort og presist
-- Bruk overskrifter uten markdown-symboler (#)
+- Bruk overskrifter uten #
 - Struktur:
 
 VVS-Rapport
@@ -64,3 +65,20 @@ Anbefalte tiltak:
 Konklusjon:
 ...
 """
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Du er en erfaren rørlegger."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.4
+        )
+
+        return {
+            "result": response.choices[0].message.content
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
