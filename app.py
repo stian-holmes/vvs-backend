@@ -95,7 +95,7 @@ Anbefalte tiltak:
 (Konkrete forslag til utbedring)
 
 Estimert tidsforbruk:
-(Bruk det som er oppgitt, og kommenter kort)
+(Bruk det som du tror, og kommenter kort)
 
 Konklusjon:
 (Hva bør gjøres videre - tydelig anbefaling)
