@@ -64,41 +64,60 @@ async def generate(data: InputData):
 
     logger.info(f"Generating report for description: {data.description[:50]}...")
 
-    prompt = f"""
+from datetime import datetime
+
+today = datetime.now().strftime("%d.%m.%Y")
+
+prompt = f"""
 Du er en erfaren rørlegger.
 
-Lag en profesjonell og kundeklar VVS-rapport basert på dette:
+Lag en profesjonell og kundeklar VVS-rapport.
+
+Bruk denne faste informasjonen:
+
+Dato: {today}
+Bedrift: Pentex AS
+Telefon: 69351580
+E-post: pentex@pentex.no
+Utført av: Montør
+
+Basert på:
 
 {data.description}
 
-Krav:
+KRAV:
 - Skriv kort, tydelig og profesjonelt språk
 - Ikke bruk AI-aktige formuleringer
-- Skriv som en rapport til kunde
+- Skal kunne sendes direkte til kunde
 
-Struktur:
+STRUKTUR:
 
-VVS-Rapport
+VVS-RAPPORT
 
-Dato:
+Dato: {today}
+Bedrift: Pentex AS
+Telefon: 69351580
+E-post: pentex@pentex.no
+Utført av: Montør
+
 Kunde:
 Adresse:
 Prosjekt:
 
 Kort oppsummering:
-(Situasjon forklart enkelt for kunde)
+...
 
 Mulig årsak:
-(Forklart på en forståelig måte)
+...
 
 Anbefalte tiltak:
-(Konkrete forslag til utbedring)
+...
 
 Estimert tidsforbruk:
-(Bruk det som du tror, og kommenter kort)
+...
 
 Konklusjon:
-(Hva bør gjøres videre - tydelig anbefaling)
+...
 """
 
     try:
