@@ -36,9 +36,14 @@ Inkluder:
 
     response = client.responses.create(
         model="gpt-4.1-mini",
-        input=prompt
+        input=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
     )
 
     return {
-        "result": response.output_text
+        "result": response.output[0].content[0].text
     }
