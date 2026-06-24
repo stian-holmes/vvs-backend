@@ -7,16 +7,20 @@ app = FastAPI()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 class InputData(BaseModel):
     description: str
+
 
 @app.get("/")
 def root():
     return {"message": "API fungerer ✅"}
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 @app.post("/api/generate")
 def generate(data: InputData):
@@ -43,3 +47,5 @@ Inkluder:
     )
 
     return {
+        "result": response["choices"][0]["message"]["content"]
+    }
