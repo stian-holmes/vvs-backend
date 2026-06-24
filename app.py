@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -64,11 +65,9 @@ async def generate(data: InputData):
 
     logger.info(f"Generating report for description: {data.description[:50]}...")
 
-from datetime import datetime
+    today = datetime.now().strftime("%d.%m.%Y")
 
-today = datetime.now().strftime("%d.%m.%Y")
-
-prompt = f"""
+    prompt = f"""
 Du er en erfaren rørlegger.
 
 Lag en profesjonell og kundeklar VVS-rapport.
