@@ -64,17 +64,19 @@ async def generate(data: InputData):
 
     logger.info(f"Generating report for description: {data.description[:50]}...")
 
-    prompt = f"""
+prompt = f"""
 Du er en erfaren rørlegger.
 
-Lag en profesjonell og tydelig VVS-rapport basert på dette:
+Lag en profesjonell og kundeklar VVS-rapport basert på dette:
 
 {data.description}
 
-Format:
-- Skriv kort og presist
-- Bruk overskrifter uten #
-- Struktur:
+Krav:
+- Skriv kort, tydelig og profesjonelt språk
+- Ikke bruk AI-aktige formuleringer
+- Skriv som en rapport til kunde
+
+Struktur:
 
 VVS-Rapport
 
@@ -84,16 +86,19 @@ Adresse:
 Prosjekt:
 
 Kort oppsummering:
-...
+(Situasjon forklart enkelt for kunde)
 
 Mulig årsak:
-...
+(Forklart på en forståelig måte)
 
 Anbefalte tiltak:
-...
+(Konkrete forslag til utbedring)
+
+Estimert tidsforbruk:
+(Bruk det som er oppgitt, og kommenter kort)
 
 Konklusjon:
-...
+(Hva bør gjøres videre - tydelig anbefaling)
 """
 
     try:
