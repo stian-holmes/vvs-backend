@@ -1,26 +1,22 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import openai
 import os
+from openai import OpenAI
 
 app = FastAPI()
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class InputData(BaseModel):
     description: str
-
 
 @app.get("/")
 def root():
     return {"message": "API fungerer ✅"}
 
-
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
 
 @app.post("/api/generate")
 def generate(data: InputData):
@@ -38,14 +34,11 @@ Inkluder:
 - Konklusjon
 """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Du er en profesjonell rørlegger."},
-            {"role": "user", "content": prompt}
-        ]
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=prompt
     )
 
     return {
-        "result": response["choices"][0]["message"]["content"]
+        "result": response.output_text
     }
