@@ -3,12 +3,10 @@ from pydantic import BaseModel
 import openai
 import os
 
-# Sett API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
 app = FastAPI()
 
-# Input modell
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 class InputData(BaseModel):
     description: str
 
@@ -22,6 +20,7 @@ def health():
 
 @app.post("/api/generate")
 def generate(data: InputData):
+
     prompt = f"""
 Du er en erfaren rørlegger.
 Lag en profesjonell VVS-rapport basert på dette:
@@ -44,6 +43,3 @@ Inkluder:
     )
 
     return {
-        "result": response["choices"][0]["message"]["content"]
-    }
-``
