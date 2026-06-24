@@ -5,9 +5,10 @@ from openai import OpenAI
 
 app = FastAPI()
 
+# Hent API key
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable not set")
+    raise RuntimeError("OPENAI_API_KEY is not set")
 
 client = OpenAI(api_key=api_key)
 
@@ -49,9 +50,10 @@ Inkluder:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "Du er en profesjonell rørlegger."},
+                {"role": "system", "content": "Du er en erfaren rørlegger som lager profesjonelle rapporter."},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            temperature=0.4  # ← viktig: mer stabile svar
         )
 
         return {
@@ -59,4 +61,9 @@ Inkluder:
         }
 
     except Exception as e:
-        return {"error": str(e)}  # 👈 viktig: vis feilen direkte
+        # Riktig HTTP statuskode
+        raise HTTPException(
+            status_code=500,
+            detail=f"AI-feil: {str(e)}"
+        )
+``
