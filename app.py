@@ -33,36 +33,34 @@ def generate(data: InputData):
     if not data.description.strip():
         raise HTTPException(status_code=400, detail="Description cannot be empty")
 
-    prompt = f"""
+prompt = f"""
 Du er en erfaren rørlegger.
-Lag en profesjonell VVS-rapport basert på dette:
+
+Lag en profesjonell og tydelig VVS-rapport basert på dette:
 
 {data.description}
 
-Inkluder:
-- Kort oppsummering
-- Mulig årsak
-- Anbefalte tiltak
-- Konklusjon
+Format:
+- Skriv kort og presist
+- Bruk overskrifter uten markdown-symboler (#)
+- Struktur:
+
+VVS-Rapport
+
+Dato:
+Kunde:
+Adresse:
+Prosjekt:
+
+Kort oppsummering:
+...
+
+Mulig årsak:
+...
+
+Anbefalte tiltak:
+...
+
+Konklusjon:
+...
 """
-
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "Du er en erfaren rørlegger som lager profesjonelle rapporter."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.4  # ← viktig: mer stabile svar
-        )
-
-        return {
-            "result": response.choices[0].message.content
-        }
-
-    except Exception as e:
-        # Riktig HTTP statuskode
-        raise HTTPException(
-            status_code=500,
-            detail=f"AI-feil: {str(e)}"
-        )
