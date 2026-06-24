@@ -66,4 +66,3 @@ Inkluder:
             status_code=500,
             detail=f"AI-feil: {str(e)}"
         )
-``
