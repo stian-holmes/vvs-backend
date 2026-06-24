@@ -1,25 +1,36 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
 from openai import OpenAI
 
 app = FastAPI()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY environment variable not set")
+
+client = OpenAI(api_key=api_key)
+
 
 class InputData(BaseModel):
     description: str
+
 
 @app.get("/")
 def root():
     return {"message": "API fungerer ✅"}
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
+
 @app.post("/api/generate")
 def generate(data: InputData):
+
+    if not data.description.strip():
+        raise HTTPException(status_code=400, detail="Description cannot be empty")
 
     prompt = f"""
 Du er en erfaren rørlegger.
@@ -34,16 +45,18 @@ Inkluder:
 - Konklusjon
 """
 
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Du er en profesjonell rørlegger."},
+                {"role": "user", "content": prompt}
+            ]
+        )
 
-    return {
-        "result": response.output[0].content[0].text
-    }
+        return {
+            "result": response.choices[0].message.content
+        }
+
+    except Exception as e:
+        return {"error": str(e)}  # 👈 viktig: vis feilen direkte
